@@ -1,0 +1,29 @@
+repeat wait() until game:IsLoaded() and game.Players.LocalPlayer
+
+local HttpService = game:GetService("HttpService")
+local API_URL = "https://replit.com/@huyefootball170/Banana?mobileBridge=1&hideBottomBar=1&forceTheme=replitLight&errorTrace=8b622c99-152e-4121-9b5d-cc17b14f6124&mobileWebview=1&supportsUpsellBridge=1&permissionRequest=1&speechRecognition=1&workspace2=1&storeReviewPrompt=1#whitelist.json" -- 🔹 Link API Replit
+
+-- 📌 Hàm lấy key từ API JSON
+local function getKeyFromAPI()
+    local success, response = pcall(function()
+        return game:HttpGet(API_URL, true) -- 🔹 Thêm `true` để tránh lỗi SSL
+    end)
+
+    if success then
+        local data = HttpService:JSONDecode(response)
+        if data and data.key then
+            return data.key -- Lấy key từ JSON
+        end
+    end
+    return nil
+end
+
+-- 🔹 Nhận key từ API và chạy script
+local key = getKeyFromAPI()
+if key then
+    print("✅ Key nhận được từ API: " .. key)
+    getgenv().Key = key
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/shinichidz/KaitunFruit/refs/heads/main/ShinichiHub"))()
+else
+    print("❌ Không lấy được key! Vui lòng kiểm tra API.")
+end
